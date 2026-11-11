@@ -1,6 +1,7 @@
-// All calls go to api.php next to the page, so the app works from any folder
-// (for example http://localhost/hold-the-vision/ on XAMPP).
-const BASE = new URL('api.php', window.location.href.split('#')[0]).toString();
+// Vercel can set VITE_API_BASE_URL to the separately hosted PHP API.
+// Without it, api.php next to the page keeps the XAMPP setup working.
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'api.php';
+const BASE = new URL(API_BASE, window.location.href.split('#')[0]).toString();
 
 export class ApiError extends Error {
   constructor(message, status) {
