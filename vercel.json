@@ -1,4 +1,10 @@
 {
   "buildCommand": "npm run build -- --outDir dist",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/api.php",
+      "destination": "https://holdvisionapi.ifree.page/backend/public/api.php"
+    }
+  ]
 }
