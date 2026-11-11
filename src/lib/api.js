@@ -21,11 +21,13 @@ export function apiUrl(route, query = {}) {
 
 export async function api(route, { method = 'GET', body, token, query } = {}) {
   let res;
-  const requestQuery = token ? { ...query, token } : query;
   try {
-    res = await fetch(apiUrl(route, requestQuery), {
+    res = await fetch(apiUrl(route, query), {
       method,
-      headers: body ? { 'Content-Type': 'text/plain;charset=UTF-8' } : undefined,
+      headers: {
+        ...(body ? { 'Content-Type': 'application/json' } : {}),
+        ...(token ? { 'X-Token': token } : {}),
+      },
       body: body ? JSON.stringify(body) : undefined,
     });
   } catch {
