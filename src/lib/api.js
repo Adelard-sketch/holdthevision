@@ -1,4 +1,4 @@
-// Vercel can set VITE_API_BASE_URL to the separately hosted PHP API.
+// Set VITE_API_BASE_URL to the hosted PHP API when deploying separately.
 // Without it, api.php next to the page keeps the XAMPP setup working.
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'api.php';
 const BASE = new URL(API_BASE, window.location.href.split('#')[0]).toString();
@@ -21,13 +21,11 @@ export function apiUrl(route, query = {}) {
 
 export async function api(route, { method = 'GET', body, token, query } = {}) {
   let res;
+  const requestQuery = token ? { ...query, token } : query;
   try {
-    res = await fetch(apiUrl(route, query), {
+    res = await fetch(apiUrl(route, requestQuery), {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { 'X-Token': token } : {}),
-      },
+      headers: body ? { 'Content-Type': 'text/plain;charset=UTF-8' } : undefined,
       body: body ? JSON.stringify(body) : undefined,
     });
   } catch {
